@@ -9,16 +9,17 @@ def load_css():
         st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
 
 def main():
-    # Load custom CSS
-    try:
-        load_css()
-    except:
-        st.warning("Custom CSS file not found. Using default styling.")
     st.set_page_config(
         page_title="Dynamic Probability Calculator",
         page_icon="🎲",
         layout="wide"
     )
+    
+    # Load custom CSS
+    try:
+        load_css()
+    except:
+        st.warning("Custom CSS file not found. Using default styling.")
 
     # Initialize session state for variables and past calculations
     if 'variables' not in st.session_state:
