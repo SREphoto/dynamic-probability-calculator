@@ -45,9 +45,9 @@ div[data-testid="stDecoration"] {
 
 /* Header title styling */
 .header-title {
-  font-size: 1.5rem !important;
+  font-size: 1.1rem !important;
   font-weight: 500 !important;
-  letter-spacing: 2px !important;
+  letter-spacing: 1px !important;
   text-transform: uppercase !important;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;
 }

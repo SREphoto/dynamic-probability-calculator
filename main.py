@@ -27,31 +27,65 @@ def main():
     if 'past_calculations' not in st.session_state:
         st.session_state.past_calculations = []
 
-    # Custom header with styling - using fixed positioning with updated design
+    # Custom header with styling - smaller fixed header with instructions button
     st.markdown("""
-    <div style='background-color:#2E3440; padding:8px; position:fixed; top:0; left:0; right:0; width:100%; z-index:9999;' class="sticky-header">
-        <h1 style='color:white; text-align:center; margin:0;' class="header-title">Dynamic Probability Calculator 🎲</h1>
+    <div style='background-color:#2E3440; padding:4px; position:fixed; top:0; left:0; right:0; width:100%; z-index:9999; display:flex; justify-content:space-between; align-items:center;' class="sticky-header">
+        <div style='width:50px;'></div>
+        <h2 style='color:white; text-align:center; margin:0; font-size:18px;' class="header-title">Dynamic Probability Calculator 🎲</h2>
+        <button id="instructionBtn" style="background:transparent; border:1px solid white; color:white; padding:2px 8px; border-radius:4px; margin-right:10px; cursor:pointer; font-size:12px;">Help</button>
     </div>
+    
+    <div id="instructionsModal" style="display:none; position:fixed; z-index:10000; top:50px; left:50%; transform:translateX(-50%); width:80%; max-width:600px; background:white; border-radius:8px; box-shadow:0 4px 8px rgba(0,0,0,0.2); padding:20px;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+            <h3 style="margin:0;">How to use this calculator</h3>
+            <button id="closeBtn" style="background:none; border:none; font-size:20px; cursor:pointer;">×</button>
+        </div>
+        <div>
+            Calculate probabilities with multiple variables. Add as many variables as needed!
+            <br><br>
+            <b>Instructions:</b>
+            <ol>
+                <li>Add variables using the 'Add Variable' button</li>
+                <li>Enter values for each variable</li>
+                <li>Select calculation type</li>
+                <li>View results</li>
+            </ol>
+        </div>
+    </div>
+
+    <script>
+        // JavaScript to handle the modal functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const instructionBtn = document.getElementById('instructionBtn');
+            const instructionsModal = document.getElementById('instructionsModal');
+            const closeBtn = document.getElementById('closeBtn');
+            
+            instructionBtn.addEventListener('click', function() {
+                instructionsModal.style.display = 'block';
+            });
+            
+            closeBtn.addEventListener('click', function() {
+                instructionsModal.style.display = 'none';
+            });
+            
+            // Close if clicked outside the modal
+            window.addEventListener('click', function(event) {
+                if (event.target == instructionsModal) {
+                    instructionsModal.style.display = 'none';
+                }
+            });
+        });
+    </script>
     """, unsafe_allow_html=True)
     
     # Add extra space to prevent content from being hidden under the header
-    st.markdown("<div style='height:60px'></div>", unsafe_allow_html=True)
+    st.markdown("<div style='height:40px;'></div>", unsafe_allow_html=True)
     
     # Main content container with padding for footer
     main_container = st.container()
 
     with main_container:
-        # Instructions in a collapsible expander
-        with st.expander("How to use this calculator", expanded=False):
-            st.markdown("""
-            Calculate probabilities with multiple variables. Add as many variables as needed!
-
-            **Instructions:**
-            1. Add variables using the 'Add Variable' button
-            2. Enter values for each variable
-            3. Select calculation type
-            4. View results
-            """)
+        # We removed the expander since we now have the modal
 
         # Add variable button
         if st.button('Add Variable ➕'):
