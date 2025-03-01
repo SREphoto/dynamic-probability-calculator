@@ -6,6 +6,6 @@ def validate_input(variables):
 
 def format_probability(probability):
     """
-    Format probability for display with improved readability
+    Format probability for display
     """
-    return f"{probability:.4f} ({probability*100:.1f}%)"
+    return f"{probability:.4f} ({probability*100:.2f}%)"

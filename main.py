@@ -146,9 +146,9 @@ def main():
                             }
                             st.session_state.past_calculations.append(calculation_record)
                             
-                            # Display results in a more readable format
+                            # Display results in a nicer format
                             st.markdown("<div class='results-section'>", unsafe_allow_html=True)
-                            st.markdown("<h2 style='color:white;'>Calculation Results 📊</h2>", unsafe_allow_html=True)
+                            st.subheader("Results 📊")
                             
                             result_cols = st.columns([3, 1])
                             with result_cols[0]:
@@ -160,16 +160,14 @@ def main():
                             # Add button to show formula with better styling
                             with result_cols[1]:
                                 st.markdown("<br>", unsafe_allow_html=True)
-                                if st.button('Show Formula 📐', key="formula_btn", use_container_width=True):
-                                    st.markdown("<div style='background-color:white; padding:15px; border-radius:8px; margin-top:10px;'>", unsafe_allow_html=True)
-                                    st.markdown("<h3 style='color:#0e4b80;'>Formula Used:</h3>", unsafe_allow_html=True)
+                                if st.button('Show Formula 📐', key="formula_btn"):
+                                    st.markdown("### Formula Used")
                                     if calc_type == "Joint Probability (AND)":
                                         st.latex(r"P(A \cap B) = P(A) \times P(B)")
                                     elif calc_type == "Union Probability (OR)":
                                         st.latex(r"P(A \cup B) = P(A) + P(B) - P(A \cap B)")
                                     else:
                                         st.latex(r"P(B|A) = \frac{P(A \cap B)}{P(A)}")
-                                    st.markdown("</div>", unsafe_allow_html=True)
                             st.markdown("</div>", unsafe_allow_html=True)
                         
                         except Exception as e:
