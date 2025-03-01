@@ -18,3 +18,13 @@
   font-weight: 600;
   letter-spacing: 1px;
 }
+
+/* Make the header sticky */
+.stApp {
+  margin-top: 0;
+}
+
+/* Add padding to the top of the app to accommodate the fixed header */
+.main .block-container {
+  padding-top: 1rem;
+}
