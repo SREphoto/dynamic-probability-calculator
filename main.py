@@ -79,7 +79,7 @@ def main():
             st.info("No past calculations yet.")
 
     # Add extra space to prevent content from being hidden under the header
-    # Space already added above
+    st.markdown("<div style='height:40px;'></div>", unsafe_allow_html=True)
 
     # Main content container with padding for footer
     main_container = st.container()
