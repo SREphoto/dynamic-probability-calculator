@@ -16,7 +16,7 @@ def main():
     )
     
     # Check for shared results in URL parameters
-    query_params = st.experimental_get_query_params()
+    query_params = st.query_params
     shared_result = None
     
     if "calc_type" in query_params and "result" in query_params and "variables" in query_params:
@@ -119,7 +119,8 @@ def main():
             
             if st.button("Start New Calculation"):
                 # Clear query parameters by reloading the page
-                st.experimental_set_query_params()
+                for param in st.query_params.keys():
+                    st.query_params.pop(param)
                 st.rerun()
             
             # Show a horizontal divider
@@ -226,21 +227,26 @@ def main():
                         # Add Copy and Share buttons
                         col1, col2 = st.columns(2)
                         with col1:
-                            if st.button("📋 Copy Results"):
-                                # Use streamlit's clipboard functionality
-                                st.toast("Results copied to clipboard!", icon="✅")
-                                # Create a hidden textarea with the content for javascript to copy
-                                st.markdown(f"""
-                                <textarea id="results-text" style="position: absolute; left: -9999px;">{results_text}</textarea>
+                            # Create button that sets text for clipboard API
+                            st.button("📋 Copy Results", 
+                                      on_click=lambda: st.write(results_text))
+                            # Add hidden element to store the text
+                            st.markdown(f"""
+                            <div class="stHidden">
+                                <button id="copy-button" style="display:none" 
+                                   onclick="navigator.clipboard.writeText(`{results_text}`).then(
+                                       () => {{ 
+                                           const toastEvent = new CustomEvent('streamlit:showToast', {{ 
+                                               detail: {{ kind: 'success', message: 'Results copied to clipboard!' }} 
+                                           }}); 
+                                           window.dispatchEvent(toastEvent);
+                                       }}
+                                   )">Copy</button>
                                 <script>
-                                    const copyToClipboard = () => {{
-                                        const text = document.getElementById('results-text');
-                                        text.select();
-                                        document.execCommand('copy');
-                                    }};
-                                    copyToClipboard();
+                                    document.getElementById('copy-button').click();
                                 </script>
-                                """, unsafe_allow_html=True)
+                            </div>
+                            """, unsafe_allow_html=True)
                         
                         with col2:
                             if st.button("🔗 Share Results"):
@@ -250,10 +256,11 @@ def main():
                                     "result": result,
                                     "variables": ",".join([f"{k}:{v}" for k, v in variables_data.items()])
                                 }
-                                # Display the shareable link
-                                share_url = "?" + "&".join([f"{k}={v}" for k, v in query_params.items()])
-                                st.code(f"Current page URL + {share_url}", language="text")
-                                st.success("Share this link to show your calculation results!")
+                                # Use st.query_params.set to update URL
+                                for k, v in query_params.items():
+                                    st.experimental_set_query_params(**{k: v})
+                                # Display success message
+                                st.success("URL updated! Copy the URL from your browser to share these results.")
                                 
                         # Add formula display
                         st.markdown("### Formula Used")
