@@ -14,7 +14,7 @@ def main():
         page_icon="🎲",
         layout="wide"
     )
-    
+
     # Load custom CSS
     try:
         load_css()
@@ -35,34 +35,33 @@ def main():
         <div style='width:50px;'></div>
     </div>
     """, unsafe_allow_html=True)
-    
+
     # Initialize session state for instructions toggle
     if 'show_instructions' not in st.session_state:
         st.session_state.show_instructions = False
-        
+
     # Add a proper Streamlit button for instructions in the sidebar
     with st.sidebar:
         if st.button('📖 Instructions'):
             st.session_state.show_instructions = not st.session_state.show_instructions
-            
+
     # Display instructions when toggled
     if st.session_state.show_instructions:
         with st.sidebar:
             st.markdown("### How to use this calculator")
             st.markdown("""
             Calculate probabilities with multiple variables. Add as many variables as needed!
-            
+
             **Instructions:**
             1. Add variables using the 'Add Variable' button
             2. Enter values for each variable
             3. Select calculation type
             4. View results
             """)
-    """, unsafe_allow_html=True)
-    
+
     # Add extra space to prevent content from being hidden under the header
-    st.markdown("<div style='height:80px;'></div>", unsafe_allow_html=True)
-    
+    # Space already added above
+
     # Main content container with padding for footer
     main_container = st.container()
 
