@@ -120,13 +120,14 @@ def main():
                 variables_data[new_name] = new_value
 
             with col3:
-                col3a, col3b = st.columns([1, 1])
-                with col3a:
-                    if st.button('Remove ❌', key=f'remove_{idx}'):
+                # Use horizontal layout for buttons with equal width
+                remove_btn, add_btn = st.columns(2)
+                with remove_btn:
+                    if st.button('Remove ❌', key=f'remove_{idx}', use_container_width=True):
                         st.session_state.variables.pop(idx)
                         st.rerun()
-                with col3b:
-                    if st.button('Add ➕', key=f'add_another_{idx}'):
+                with add_btn:
+                    if st.button('Add ➕', key=f'add_another_{idx}', use_container_width=True):
                         st.session_state.variables.append({
                             'name': f'Variable {len(st.session_state.variables) + 1}',
                             'value': 0.5
