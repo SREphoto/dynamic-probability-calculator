@@ -120,9 +120,18 @@ def main():
                 variables_data[new_name] = new_value
 
             with col3:
-                if st.button('Remove ❌', key=f'remove_{idx}'):
-                    st.session_state.variables.pop(idx)
-                    st.rerun()
+                col3a, col3b = st.columns(2)
+                with col3a:
+                    if st.button('Remove ❌', key=f'remove_{idx}'):
+                        st.session_state.variables.pop(idx)
+                        st.rerun()
+                with col3b:
+                    if st.button('Add ➕', key=f'add_another_{idx}'):
+                        st.session_state.variables.append({
+                            'name': f'Variable {len(st.session_state.variables) + 1}',
+                            'value': 0.5
+                        })
+                        st.rerun()
 
         # Calculation options
         if st.session_state.variables:
