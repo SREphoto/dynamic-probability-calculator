@@ -258,7 +258,7 @@ def main():
                                 }
                                 # Use st.query_params.set to update URL
                                 for k, v in query_params.items():
-                                    st.experimental_set_query_params(**{k: v})
+                                    st.query_params[k] = v
                                 # Display success message
                                 st.success("URL updated! Copy the URL from your browser to share these results.")
                                 
