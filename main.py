@@ -32,13 +32,13 @@ def main():
     <div style='background-color:#2E3440; padding:4px; position:fixed; top:48px; left:0; right:0; width:100%; z-index:9998; display:flex; justify-content:space-between; align-items:center;' class="sticky-header">
         <div style='width:50px;'></div>
         <h2 style='color:white; text-align:center; margin:0; font-size:18px;' class="header-title">Dynamic Probability Calculator 🎲</h2>
-        <button id="instructionBtn" style="background:transparent; border:1px solid white; color:white; padding:2px 8px; border-radius:4px; margin-right:10px; cursor:pointer; font-size:12px;">Help</button>
+        <button onclick="showInstructions()" style="background:transparent; border:1px solid white; color:white; padding:2px 8px; border-radius:4px; margin-right:10px; cursor:pointer; font-size:12px;">Instructions</button>
     </div>
     
     <div id="instructionsModal" style="display:none; position:fixed; z-index:10000; top:50px; left:50%; transform:translateX(-50%); width:80%; max-width:600px; background:white; border-radius:8px; box-shadow:0 4px 8px rgba(0,0,0,0.2); padding:20px;">
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
             <h3 style="margin:0;">How to use this calculator</h3>
-            <button id="closeBtn" style="background:none; border:none; font-size:20px; cursor:pointer;">×</button>
+            <button onclick="hideInstructions()" style="background:none; border:none; font-size:20px; cursor:pointer;">×</button>
         </div>
         <div>
             Calculate probabilities with multiple variables. Add as many variables as needed!
@@ -54,27 +54,22 @@ def main():
     </div>
 
     <script>
-        // JavaScript to handle the modal functionality
-        document.addEventListener('DOMContentLoaded', function() {
-            const instructionBtn = document.getElementById('instructionBtn');
-            const instructionsModal = document.getElementById('instructionsModal');
-            const closeBtn = document.getElementById('closeBtn');
-            
-            instructionBtn.addEventListener('click', function() {
-                instructionsModal.style.display = 'block';
-            });
-            
-            closeBtn.addEventListener('click', function() {
-                instructionsModal.style.display = 'none';
-            });
-            
-            // Close if clicked outside the modal
-            window.addEventListener('click', function(event) {
-                if (event.target == instructionsModal) {
-                    instructionsModal.style.display = 'none';
-                }
-            });
-        });
+        // JavaScript functions to show/hide instructions modal
+        function showInstructions() {
+            document.getElementById('instructionsModal').style.display = 'block';
+        }
+        
+        function hideInstructions() {
+            document.getElementById('instructionsModal').style.display = 'none';
+        }
+        
+        // Close if clicked outside the modal
+        window.onclick = function(event) {
+            var modal = document.getElementById('instructionsModal');
+            if (event.target == modal) {
+                modal.style.display = 'none';
+            }
+        }
     </script>
     """, unsafe_allow_html=True)
     
