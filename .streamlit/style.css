@@ -1,0 +1,86 @@
+
+/* Main app styling */
+.main-title {
+    color: #4f8bf9;
+    font-weight: 800;
+}
+
+.instructions {
+    background-color: #f0f5ff;
+    padding: 20px;
+    border-radius: 10px;
+    border-left: 5px solid #4f8bf9;
+    margin-bottom: 20px;
+}
+
+/* Variable cards styling */
+.variable-card {
+    background-color: #f9f9f9;
+    border-radius: 10px;
+    padding: 15px;
+    margin-bottom: 15px;
+    border: 1px solid #eaeaea;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+/* Button styling */
+.primary-button {
+    background-color: #4f8bf9;
+    color: white;
+    font-weight: 600;
+}
+
+.remove-button {
+    color: #ff4b4b;
+}
+
+.calculate-button {
+    background-color: #4CAF50;
+    color: white;
+    font-weight: 600;
+    padding: 10px 20px;
+}
+
+.formula-button {
+    background-color: #9c27b0;
+    color: white;
+}
+
+/* Results section */
+.results-section {
+    background-color: #e8f4fd;
+    padding: 20px;
+    border-radius: 10px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+/* History section */
+.calculation-history {
+    background-color: #f9f9f9;
+    border-radius: 10px;
+    padding: 10px;
+}
+
+.history-item {
+    border-bottom: 1px solid #eaeaea;
+    padding: 10px 0;
+}
+
+/* Footer */
+.footer {
+    margin-top: 50px;
+    padding-top: 20px;
+    border-top: 1px solid #eaeaea;
+    text-align: center;
+    color: #888;
+    font-size: 14px;
+}
+
+/* Tabs */
+div[data-testid="stHorizontalBlock"] {
+    background-color: white;
+    padding: 10px;
+    border-radius: 10px;
+    margin-bottom: 10px;
+}
