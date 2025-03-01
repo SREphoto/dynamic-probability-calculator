@@ -32,61 +32,32 @@ def main():
     <div style='background-color:#2E3440; padding:4px; position:fixed; top:48px; left:0; right:0; width:100%; z-index:9998; display:flex; justify-content:space-between; align-items:center;' class="sticky-header">
         <div style='width:50px;'></div>
         <h2 style='color:white; text-align:center; margin:0; font-size:18px;' class="header-title">Dynamic Probability Calculator 🎲</h2>
-        <button id="instructionsBtn" style="background:transparent; border:1px solid white; color:white; padding:2px 8px; border-radius:4px; margin-right:10px; cursor:pointer; font-size:12px;">Instructions</button>
+        <div style='width:50px;'></div>
     </div>
+    """, unsafe_allow_html=True)
     
-    <div id="instructionsModal" style="display:none; position:fixed; z-index:10000; top:50px; left:50%; transform:translateX(-50%); width:80%; max-width:600px; background:white; border-radius:8px; box-shadow:0 4px 8px rgba(0,0,0,0.2); padding:20px;">
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
-            <h3 style="margin:0;">How to use this calculator</h3>
-            <button id="closeInstructionsBtn" style="background:none; border:none; font-size:20px; cursor:pointer;">×</button>
-        </div>
-        <div>
+    # Initialize session state for instructions toggle
+    if 'show_instructions' not in st.session_state:
+        st.session_state.show_instructions = False
+        
+    # Add a proper Streamlit button for instructions in the sidebar
+    with st.sidebar:
+        if st.button('📖 Instructions'):
+            st.session_state.show_instructions = not st.session_state.show_instructions
+            
+    # Display instructions when toggled
+    if st.session_state.show_instructions:
+        with st.sidebar:
+            st.markdown("### How to use this calculator")
+            st.markdown("""
             Calculate probabilities with multiple variables. Add as many variables as needed!
-            <br><br>
-            <b>Instructions:</b>
-            <ol>
-                <li>Add variables using the 'Add Variable' button</li>
-                <li>Enter values for each variable</li>
-                <li>Select calculation type</li>
-                <li>View results</li>
-            </ol>
-        </div>
-    </div>
-
-    <script>
-        // Wait for the DOM to be fully loaded
-        document.addEventListener('DOMContentLoaded', function() {
-            // Get references to the elements
-            const instructionsBtn = document.getElementById('instructionsBtn');
-            const instructionsModal = document.getElementById('instructionsModal');
-            const closeInstructionsBtn = document.getElementById('closeInstructionsBtn');
             
-            // Show instructions modal when button is clicked
-            if (instructionsBtn) {
-                instructionsBtn.addEventListener('click', function() {
-                    if (instructionsModal) {
-                        instructionsModal.style.display = 'block';
-                    }
-                });
-            }
-            
-            // Hide instructions when close button is clicked
-            if (closeInstructionsBtn) {
-                closeInstructionsBtn.addEventListener('click', function() {
-                    if (instructionsModal) {
-                        instructionsModal.style.display = 'none';
-                    }
-                });
-            }
-            
-            // Close if clicked outside the modal
-            window.addEventListener('click', function(event) {
-                if (event.target === instructionsModal) {
-                    instructionsModal.style.display = 'none';
-                }
-            });
-        });
-    </script>
+            **Instructions:**
+            1. Add variables using the 'Add Variable' button
+            2. Enter values for each variable
+            3. Select calculation type
+            4. View results
+            """)
     """, unsafe_allow_html=True)
     
     # Add extra space to prevent content from being hidden under the header
