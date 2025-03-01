@@ -120,7 +120,7 @@ def main():
                 variables_data[new_name] = new_value
 
             with col3:
-                col3a, col3b = st.columns(2)
+                col3a, col3b = st.columns([1, 1])
                 with col3a:
                     if st.button('Remove ❌', key=f'remove_{idx}'):
                         st.session_state.variables.pop(idx)
