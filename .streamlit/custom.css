@@ -67,3 +67,11 @@ div[data-testid="stDecoration"] {
 [data-testid="stSidebarContent"] {
   padding-top: 1rem;
 }
+
+/* Move sidebar collapse button to the bottom */
+button[kind="secondary"][data-testid="baseButton-secondary"] {
+  position: fixed !important;
+  bottom: 20px !important;
+  left: 0 !important;
+  z-index: 999 !important;
+}
