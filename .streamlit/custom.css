@@ -68,10 +68,10 @@ div[data-testid="stDecoration"] {
   padding-top: 1rem;
 }
 
-/* Move sidebar collapse button to the bottom */
+/* Align sidebar collapse button with the header */
 button[kind="secondary"][data-testid="baseButton-secondary"] {
   position: fixed !important;
-  bottom: 20px !important;
+  top: 54px !important; /* Aligned with the header which is at 48px + some padding */
   left: 0 !important;
   z-index: 999 !important;
 }
