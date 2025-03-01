@@ -1,3 +1,4 @@
+
 import numpy as np
 
 def calculate_probability(variables, calc_type, event_A=None, event_B=None):

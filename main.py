@@ -68,7 +68,7 @@ def main():
             with col3:
                 if st.button('Remove ❌', key=f'remove_{idx}'):
                     st.session_state.variables.pop(idx)
-                    st.experimental_rerun()
+                    st.rerun()
 
         # Calculation options
         if st.session_state.variables:
@@ -144,7 +144,7 @@ def main():
         with col1:
             if st.button("New Calculation 🔄"):
                 st.session_state.variables = []
-                st.experimental_rerun()
+                st.rerun()
 
         with col2:
             st.subheader("Past Calculations")
@@ -159,7 +159,7 @@ def main():
                                 'name': f"Previous_{calc['type']}_{calc['id']}",
                                 'value': calc['result']
                             })
-                            st.experimental_rerun()
+                            st.rerun()
             else:
                 st.info("No past calculations yet.")
 
