@@ -14,6 +14,25 @@ def main():
         page_icon="🎲",
         layout="wide"
     )
+    
+    # Check for shared results in URL parameters
+    query_params = st.experimental_get_query_params()
+    shared_result = None
+    
+    if "calc_type" in query_params and "result" in query_params and "variables" in query_params:
+        shared_result = {
+            "calc_type": query_params["calc_type"][0],
+            "result": float(query_params["result"][0]),
+            "variables": {}
+        }
+        
+        # Parse variables from URL
+        var_str = query_params["variables"][0]
+        var_pairs = var_str.split(",")
+        for pair in var_pairs:
+            if ":" in pair:
+                name, value = pair.split(":")
+                shared_result["variables"][name] = float(value)
 
     # Load custom CSS
     try:
@@ -85,6 +104,27 @@ def main():
     main_container = st.container()
 
     with main_container:
+        # Display shared results if present
+        if shared_result:
+            st.info("Viewing shared calculation results")
+            st.subheader("Shared Results")
+            st.markdown(f"""
+            **Calculation Type:** {shared_result['calc_type']}  
+            **Result:** {format_probability(shared_result['result'])}
+            
+            **Variables used:**
+            """)
+            for var_name, var_value in shared_result['variables'].items():
+                st.markdown(f"- {var_name}: {format_probability(var_value)}")
+            
+            if st.button("Start New Calculation"):
+                # Clear query parameters by reloading the page
+                st.experimental_set_query_params()
+                st.rerun()
+            
+            # Show a horizontal divider
+            st.markdown("---")
+            
         # We removed the expander since we now have the modal
 
         # Add variable button
@@ -177,11 +217,44 @@ def main():
 
                         # Display results
                         st.subheader("Results")
+                        results_text = f"Calculation Type: {calc_type}\nResult: {format_probability(result)}"
                         st.markdown(f"""
                         **Calculation Type:** {calc_type}  
                         **Result:** {format_probability(result)}
                         """)
-
+                        
+                        # Add Copy and Share buttons
+                        col1, col2 = st.columns(2)
+                        with col1:
+                            if st.button("📋 Copy Results"):
+                                # Use streamlit's clipboard functionality
+                                st.toast("Results copied to clipboard!", icon="✅")
+                                # Create a hidden textarea with the content for javascript to copy
+                                st.markdown(f"""
+                                <textarea id="results-text" style="position: absolute; left: -9999px;">{results_text}</textarea>
+                                <script>
+                                    const copyToClipboard = () => {{
+                                        const text = document.getElementById('results-text');
+                                        text.select();
+                                        document.execCommand('copy');
+                                    }};
+                                    copyToClipboard();
+                                </script>
+                                """, unsafe_allow_html=True)
+                        
+                        with col2:
+                            if st.button("🔗 Share Results"):
+                                # Create shareable link with query parameters
+                                query_params = {
+                                    "calc_type": calc_type,
+                                    "result": result,
+                                    "variables": ",".join([f"{k}:{v}" for k, v in variables_data.items()])
+                                }
+                                # Display the shareable link
+                                share_url = "?" + "&".join([f"{k}={v}" for k, v in query_params.items()])
+                                st.code(f"Current page URL + {share_url}", language="text")
+                                st.success("Share this link to show your calculation results!")
+                                
                         # Add formula display
                         st.markdown("### Formula Used")
                         if calc_type == "Joint Probability (AND)":
