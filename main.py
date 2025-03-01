@@ -14,7 +14,7 @@ def main():
         page_icon="🎲",
         layout="wide"
     )
-    
+
     # Check for shared results in URL parameters
     query_params = st.query_params
     shared_result = None
@@ -126,7 +126,6 @@ def main():
             # Show a horizontal divider
             st.markdown("---")
             
-        # We removed the expander since we now have the modal
 
         # Add variable button
         if st.button('Add Variable ➕'):
@@ -138,9 +137,10 @@ def main():
         # Display variables
         variables_data = {}
         for idx, var in enumerate(st.session_state.variables):
-            col1, col2, col3 = st.columns([3, 2, 1])
+            # Create three columns: name, value, and buttons
+            name_col, value_col, buttons_col = st.columns([3, 2, 2])
 
-            with col1:
+            with name_col:
                 new_name = st.text_input(
                     'Variable Name',
                     value=var['name'],
@@ -148,9 +148,9 @@ def main():
                 )
                 var['name'] = new_name
 
-            with col2:
+            with value_col:
                 new_value = st.number_input(
-                    'Probability',
+                    'Probability (0-1)',
                     min_value=0.0,
                     max_value=1.0,
                     value=float(var['value']),
@@ -160,20 +160,20 @@ def main():
                 var['value'] = new_value
                 variables_data[new_name] = new_value
 
-            with col3:
-                # Use horizontal layout for buttons with equal width
+            with buttons_col:
+                # Create two equal columns for the buttons
                 remove_btn, add_btn = st.columns(2)
                 with remove_btn:
-                    if st.button('Remove ❌', key=f'remove_{idx}', use_container_width=True):
+                    if st.button('❌', key=f'remove_{idx}', help="Remove this variable"):
                         st.session_state.variables.pop(idx)
-                        st.rerun()
+                        st.experimental_rerun()
                 with add_btn:
-                    if st.button('Add ➕', key=f'add_another_{idx}', use_container_width=True):
+                    if st.button('➕', key=f'add_after_{idx}', help="Add new variable"):
                         st.session_state.variables.append({
                             'name': f'Variable {len(st.session_state.variables) + 1}',
                             'value': 0.5
                         })
-                        st.rerun()
+                        st.experimental_rerun()
 
         # Calculation options
         if st.session_state.variables:
@@ -188,10 +188,10 @@ def main():
             # Conditional probability options
             if calc_type == "Conditional Probability" and len(st.session_state.variables) >= 2:
                 event_A = st.selectbox("Select Event A (Given)", 
-                                     [var['name'] for var in st.session_state.variables])
+                                        [var['name'] for var in st.session_state.variables])
                 event_B = st.selectbox("Select Event B (Target)", 
-                                     [var['name'] for var in st.session_state.variables 
-                                      if var['name'] != event_A])
+                                        [var['name'] for var in st.session_state.variables 
+                                         if var['name'] != event_A])
 
             # Calculate button
             if st.button('Calculate Probability'):
