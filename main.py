@@ -27,9 +27,9 @@ def main():
     if 'past_calculations' not in st.session_state:
         st.session_state.past_calculations = []
 
-    # Custom header with styling - smaller fixed header with instructions button
+    # Custom header with styling - positioned below Streamlit's menu
     st.markdown("""
-    <div style='background-color:#2E3440; padding:4px; position:fixed; top:0; left:0; right:0; width:100%; z-index:9999; display:flex; justify-content:space-between; align-items:center;' class="sticky-header">
+    <div style='background-color:#2E3440; padding:4px; position:fixed; top:48px; left:0; right:0; width:100%; z-index:9998; display:flex; justify-content:space-between; align-items:center;' class="sticky-header">
         <div style='width:50px;'></div>
         <h2 style='color:white; text-align:center; margin:0; font-size:18px;' class="header-title">Dynamic Probability Calculator 🎲</h2>
         <button id="instructionBtn" style="background:transparent; border:1px solid white; color:white; padding:2px 8px; border-radius:4px; margin-right:10px; cursor:pointer; font-size:12px;">Help</button>
@@ -79,7 +79,7 @@ def main():
     """, unsafe_allow_html=True)
     
     # Add extra space to prevent content from being hidden under the header
-    st.markdown("<div style='height:40px;'></div>", unsafe_allow_html=True)
+    st.markdown("<div style='height:80px;'></div>", unsafe_allow_html=True)
     
     # Main content container with padding for footer
     main_container = st.container()
