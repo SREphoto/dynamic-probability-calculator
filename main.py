@@ -109,7 +109,7 @@ def main():
 
             with col2:
                 new_value = st.number_input(
-                    'Probability (0-1)',
+                    'Probability',
                     min_value=0.0,
                     max_value=1.0,
                     value=float(var['value']),
