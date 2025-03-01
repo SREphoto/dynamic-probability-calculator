@@ -58,6 +58,25 @@ def main():
             3. Select calculation type
             4. View results
             """)
+    
+    # Display past calculations in sidebar
+    with st.sidebar:
+        st.markdown("---")
+        st.subheader("Past Calculations")
+        if st.session_state.past_calculations:
+            for calc in reversed(st.session_state.past_calculations[-5:]):  # Show last 5 calculations
+                with st.expander(f"{calc['type']} - Result: {format_probability(calc['result'])}"):
+                    st.write("Variables used:")
+                    for var_name, var_value in calc['variables'].items():
+                        st.write(f"- {var_name}: {format_probability(var_value)}")
+                    if st.button("Use Result as New Variable", key=f"use_sidebar_{calc['id']}"):
+                        st.session_state.variables.append({
+                            'name': f"Previous_{calc['type']}_{calc['id']}",
+                            'value': calc['result']
+                        })
+                        st.rerun()
+        else:
+            st.info("No past calculations yet.")
 
     # Add extra space to prevent content from being hidden under the header
     # Space already added above
@@ -173,29 +192,9 @@ def main():
     footer = st.container()
     with footer:
         st.markdown("---")
-        col1, col2 = st.columns(2)
-
-        with col1:
-            if st.button("New Calculation 🔄"):
-                st.session_state.variables = []
-                st.rerun()
-
-        with col2:
-            st.subheader("Past Calculations")
-            if st.session_state.past_calculations:
-                for calc in reversed(st.session_state.past_calculations[-5:]):  # Show last 5 calculations
-                    with st.expander(f"{calc['type']} - Result: {format_probability(calc['result'])}"):
-                        st.write("Variables used:")
-                        for var_name, var_value in calc['variables'].items():
-                            st.write(f"- {var_name}: {format_probability(var_value)}")
-                        if st.button("Use Result as New Variable", key=f"use_{calc['id']}"):
-                            st.session_state.variables.append({
-                                'name': f"Previous_{calc['type']}_{calc['id']}",
-                                'value': calc['result']
-                            })
-                            st.rerun()
-            else:
-                st.info("No past calculations yet.")
+        if st.button("New Calculation 🔄"):
+            st.session_state.variables = []
+            st.rerun()
 
 if __name__ == "__main__":
     main()
