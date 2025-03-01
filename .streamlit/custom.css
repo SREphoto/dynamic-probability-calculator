@@ -40,6 +40,16 @@ div[data-testid="stDecoration"] {
   right: 0;
   z-index: 9999;
   width: 100%;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+/* Header title styling */
+.header-title {
+  font-size: 1.5rem !important;
+  font-weight: 500 !important;
+  letter-spacing: 2px !important;
+  text-transform: uppercase !important;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;
 }
 
 /* Add padding to the top of the app to accommodate the fixed header */
