@@ -27,12 +27,15 @@ def main():
     if 'past_calculations' not in st.session_state:
         st.session_state.past_calculations = []
 
-    # Custom header with styling (static/fixed position)
+    # Custom header with styling
     st.markdown("""
-    <div style='background-color:#3b6feb; padding:10px; border-radius:10px; position:sticky; top:0; z-index:999;'>
+    <div style='background-color:#3b6feb; padding:10px; border-radius:10px; z-index:9999;' class="sticky-header">
         <h1 style='color:white; text-align:center; margin:0;'>Dynamic Probability Calculator 🎲</h1>
     </div>
     """, unsafe_allow_html=True)
+    
+    # Add extra space to prevent content from being hidden under the header
+    st.markdown("<div style='height:10px'></div>", unsafe_allow_html=True)
     
     # Main content container with padding for footer
     main_container = st.container()
