@@ -118,15 +118,14 @@ def main():
                         **Result:** {format_probability(result)}
                         """)
 
-                        # Add button to show formula
-                        if st.button('Show Formula 📐'):
-                            st.markdown("### Formula Used")
-                            if calc_type == "Joint Probability (AND)":
-                                st.latex(r"P(A \cap B) = P(A) \times P(B)")
-                            elif calc_type == "Union Probability (OR)":
-                                st.latex(r"P(A \cup B) = P(A) + P(B) - P(A \cap B)")
-                            else:
-                                st.latex(r"P(B|A) = \frac{P(A \cap B)}{P(A)}")
+                        # Add formula display
+                        st.markdown("### Formula Used")
+                        if calc_type == "Joint Probability (AND)":
+                            st.latex(r"P(A \cap B) = P(A) \times P(B)")
+                        elif calc_type == "Union Probability (OR)":
+                            st.latex(r"P(A \cup B) = P(A) + P(B) - P(A \cap B)")
+                        else:
+                            st.latex(r"P(B|A) = \frac{P(A \cap B)}{P(A)}")
 
                     except Exception as e:
                         st.error(f"Calculation Error: {str(e)}")
