@@ -42,7 +42,7 @@ def main():
         main_container = st.container()
         
         with main_container:
-            # Instructions with better styling
+            # Instructions with cleaner styling
             st.markdown("<div class='instructions'>", unsafe_allow_html=True)
             st.markdown("""
             ### How to use this calculator:
