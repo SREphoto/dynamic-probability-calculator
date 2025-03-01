@@ -66,54 +66,20 @@ def main():
     # Calculation options
     if st.session_state.variables:
         st.subheader("Calculation Options")
-
-        # Create two columns for the calculation type selection and help icon
-        calc_col, help_col = st.columns([4, 1])
-
-        with calc_col:
-            calc_type = st.selectbox(
-                "Select Probability Calculation",
-                ["Joint Probability (AND)",
-                 "Union Probability (OR)",
-                 "Conditional Probability"]
-            )
-
-        with help_col:
-            if calc_type == "Joint Probability (AND)":
-                st.help("""
-                Joint Probability calculates the probability of all events occurring together.
-
-                Formula: P(A ∩ B) = P(A) × P(B)
-
-                Example: If P(Rain) = 0.3 and P(Wind) = 0.4
-                P(Rain AND Wind) = 0.3 × 0.4 = 0.12
-                """)
-            elif calc_type == "Union Probability (OR)":
-                st.help("""
-                Union Probability calculates the probability of at least one event occurring.
-
-                Formula: P(A ∪ B) = P(A) + P(B) - P(A ∩ B)
-
-                Example: If P(Rain) = 0.3 and P(Wind) = 0.4
-                P(Rain OR Wind) = 0.3 + 0.4 - (0.3 × 0.4) = 0.58
-                """)
-            else:
-                st.help("""
-                Conditional Probability calculates the probability of one event occurring given that another event has occurred.
-
-                Formula: P(B|A) = P(A ∩ B) / P(A)
-
-                Example: If P(Rain) = 0.3 and P(Rain AND Thunder) = 0.12
-                P(Thunder|Rain) = 0.12 / 0.3 = 0.4
-                """)
+        calc_type = st.selectbox(
+            "Select Probability Calculation",
+            ["Joint Probability (AND)",
+             "Union Probability (OR)",
+             "Conditional Probability"]
+        )
 
         # Conditional probability options
         if calc_type == "Conditional Probability" and len(st.session_state.variables) >= 2:
             event_A = st.selectbox("Select Event A (Given)", 
-                                    [var['name'] for var in st.session_state.variables])
+                                 [var['name'] for var in st.session_state.variables])
             event_B = st.selectbox("Select Event B (Target)", 
-                                    [var['name'] for var in st.session_state.variables 
-                                     if var['name'] != event_A])
+                                 [var['name'] for var in st.session_state.variables 
+                                  if var['name'] != event_A])
 
         # Calculate button
         if st.button('Calculate Probability'):
