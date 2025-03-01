@@ -29,7 +29,7 @@ def main():
 
     # Custom header with styling - using fixed positioning with updated design
     st.markdown("""
-    <div style='background-color:#3b6feb; padding:8px; position:fixed; top:0; left:0; right:0; width:100%; z-index:9999;' class="sticky-header">
+    <div style='background-color:#2E3440; padding:8px; position:fixed; top:0; left:0; right:0; width:100%; z-index:9999;' class="sticky-header">
         <h1 style='color:white; text-align:center; margin:0;' class="header-title">Dynamic Probability Calculator 🎲</h1>
     </div>
     """, unsafe_allow_html=True)
