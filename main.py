@@ -4,7 +4,16 @@ import pandas as pd
 from probability_calculator import calculate_probability
 from utils import validate_input, format_probability
 
+def load_css():
+    with open(".streamlit/custom.css") as f:
+        st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
+
 def main():
+    # Load custom CSS
+    try:
+        load_css()
+    except:
+        st.warning("Custom CSS file not found. Using default styling.")
     st.set_page_config(
         page_title="Dynamic Probability Calculator",
         page_icon="🎲",
@@ -17,21 +26,28 @@ def main():
     if 'past_calculations' not in st.session_state:
         st.session_state.past_calculations = []
 
-    st.title("Dynamic Probability Calculator 🎲")
-
+    # Custom header with styling
+    st.markdown("""
+    <div style='background-color:#3b6feb; padding:10px; border-radius:10px'>
+        <h1 style='color:white; text-align:center'>Dynamic Probability Calculator 🎲</h1>
+    </div>
+    """, unsafe_allow_html=True)
+    
     # Main content container with padding for footer
     main_container = st.container()
 
     with main_container:
-        st.markdown("""
-        Calculate probabilities with multiple variables. Add as many variables as needed!
+        # Instructions in a collapsible expander
+        with st.expander("How to use this calculator", expanded=False):
+            st.markdown("""
+            Calculate probabilities with multiple variables. Add as many variables as needed!
 
-        **Instructions:**
-        1. Add variables using the 'Add Variable' button
-        2. Enter values for each variable
-        3. Select calculation type
-        4. View results
-        """)
+            **Instructions:**
+            1. Add variables using the 'Add Variable' button
+            2. Enter values for each variable
+            3. Select calculation type
+            4. View results
+            """)
 
         # Add variable button
         if st.button('Add Variable ➕'):
