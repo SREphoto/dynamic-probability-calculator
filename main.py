@@ -16,7 +16,7 @@ def main():
     )
     
     # Check for shared results in URL parameters
-    query_params = st.experimental_get_query_params()
+    query_params = st.query_params
     shared_result = None
     
     if "calc_type" in query_params and "result" in query_params and "variables" in query_params:
@@ -119,7 +119,7 @@ def main():
             
             if st.button("Start New Calculation"):
                 # Clear query parameters by reloading the page
-                st.experimental_set_query_params()
+                st.query_params.clear()
                 st.rerun()
             
             # Show a horizontal divider
@@ -255,8 +255,9 @@ def main():
                                     "result": result,
                                     "variables": ",".join([f"{k}:{v}" for k, v in variables_data.items()])
                                 }
-                                # Use st.experimental_set_query_params to update URL
-                                st.experimental_set_query_params(**query_params)
+                                # Update URL with query parameters
+                                for key, value in query_params.items():
+                                    st.query_params[key] = value
                                 # Display success message
                                 st.success("URL updated! Copy the URL from your browser to share these results.")
                                 
