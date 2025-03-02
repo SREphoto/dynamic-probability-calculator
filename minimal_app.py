@@ -1,21 +1,37 @@
 import streamlit as st
 import sys
+import traceback
 
 print("Starting minimal Streamlit app...")
 sys.stdout.flush()
 
-st.set_page_config(
-    page_title="Minimal Test",
-    page_icon="🔍",
-    layout="wide"
-)
+try:
+    # Basic page config
+    print("Setting up page config...")
+    sys.stdout.flush()
 
-print("Page config set...")
-sys.stdout.flush()
+    st.set_page_config(
+        page_title="Minimal Test",
+        page_icon="🔍",
+        layout="wide"
+    )
+    print("Page config set successfully...")
+    sys.stdout.flush()
 
-st.title("Minimal Streamlit Test")
-st.write("Hello World!")
-st.info("Server is running on port 5000")
+    # Basic content
+    st.title("Minimal Streamlit Test")
+    st.write("Hello World!")
 
-print("UI elements rendered...")
-sys.stdout.flush()
+    # Add a simple interactive element
+    if st.button('Click me!'):
+        st.success('Button clicked!')
+
+    print("UI elements rendered successfully...")
+    sys.stdout.flush()
+
+except Exception as e:
+    print(f"ERROR in minimal app: {str(e)}")
+    print("Traceback:")
+    traceback.print_exc()
+    sys.stdout.flush()
+    st.error(f"Application Error: {str(e)}")
