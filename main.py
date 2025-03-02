@@ -186,6 +186,8 @@ def main():
             )
 
             # Conditional probability options
+            event_A = None
+            event_B = None
             if calc_type == "Conditional Probability" and len(st.session_state.variables) >= 2:
                 event_A = st.selectbox("Select Event A (Given)", 
                                         [var['name'] for var in st.session_state.variables])
@@ -198,6 +200,9 @@ def main():
                 if validate_input(variables_data):
                     try:
                         if calc_type == "Conditional Probability" and len(st.session_state.variables) >= 2:
+                            if event_A is None or event_B is None:
+                                st.error("Please select both events for conditional probability calculation.")
+                                return
                             result = calculate_probability(
                                 variables_data,
                                 calc_type,
@@ -262,6 +267,7 @@ def main():
                                 # Display success message
                                 st.success("URL updated! Copy the URL from your browser to share these results.")
                                 
+
                         # Add formula display
                         st.markdown("### Formula Used")
                         if calc_type == "Joint Probability (AND)":
