@@ -4,6 +4,7 @@ version = "0.1.0"
 description = "Add your description here"
 requires-python = ">=3.11"
 dependencies = [
-    "numpy>=2.2.3",
-    "streamlit>=1.42.2",
+    "numpy<2.0.0",
+    "pandas>=2.2.3",
+    "streamlit<1.32.0",
 ]

@@ -1,11 +1,11 @@
-modules = ["python-3.11", "python3"]
+modules = ["python-3.11"]
 
 [nix]
 channel = "stable-24_05"
 
 [deployment]
 deploymentTarget = "autoscale"
-run = ["sh", "-c", "streamlit run debug_app.py --server.address 0.0.0.0 --server.port 5000 --server.headless true"]
+run = ["sh", "-c", "streamlit run minimal_app.py --server.address 0.0.0.0 --server.port 5000"]
 
 [workflows]
 runButton = "Project"
@@ -31,7 +31,7 @@ task = "packager.installForAll"
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
-args = "streamlit run debug_app.py --server.address 0.0.0.0 --server.port 5000 --server.headless true"
+args = "streamlit run minimal_app.py --server.address 0.0.0.0 --server.port 5000"
 waitForPort = 5000
 
 [[ports]]
