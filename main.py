@@ -179,6 +179,9 @@ def main():
                 else:
                     st.info("No past calculations yet.")
 
+        print("Application setup completed")
+        sys.stdout.flush()
+
     except Exception as e:
         print(f"ERROR: Application failed to start: {str(e)}")
         print("Traceback:")
