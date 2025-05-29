@@ -6,9 +6,21 @@ A Streamlit-powered web application for performing complex probability calculati
 
 - Interactive variable input system
 - Multiple probability calculation types:
-  - Joint Probability (AND)
-  - Union Probability (OR)
-  - Conditional Probability
+  - Joint Probability (AND): Calculates P(A ∩ B ∩ C...).
+  - Union Probability (OR): Calculates P(A ∪ B ∪ C...).
+  - Conditional Probability: Calculates P(B|A).
+  - **Bayes' Theorem:**
+    - Calculates the probability of an event based on prior knowledge of conditions that might be related to the event (P(A|B)).
+    - Requires three probabilities selected from your defined variables:
+      - P(A): The prior probability of event A.
+      - P(B|A): The probability of observing evidence B if event A is true.
+      - P(B|¬A): The probability of observing evidence B if event A is false.
+  - **Binomial Distribution:**
+    - Calculates the probability of achieving a specific number of successes (`k`) in a fixed number of independent trials (`n`), given a constant probability of success (`p`) for each trial.
+    - Requires:
+      - Probability of Success (p): Select one of your defined variables.
+      - Number of Trials (n): Enter the total number of trials.
+      - Number of Successes (k): Enter the specific number of successes you are interested in.
 - Calculation history tracking
 - Result sharing functionality
 - Dynamic formula display

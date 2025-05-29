@@ -75,10 +75,28 @@ def main():
             Calculate probabilities with multiple variables. Add as many variables as needed!
 
             **Instructions:**
-            1. Add variables using the 'Add Variable' button
-            2. Enter values for each variable
-            3. Select calculation type
-            4. View results
+            1. Add variables using the 'Add Variable' button. Each variable represents an event and its probability (0-1).
+            2. Enter a descriptive name and the probability for each variable.
+            3. Select the desired calculation type from the dropdown menu.
+            4. Depending on the calculation type, you might need to select specific variables for different roles (e.g., Event A, Event B) or enter additional parameters.
+            5. Click 'Calculate Probability' to see the result and the formula used.
+
+            **Calculation Types:**
+            - **Joint Probability (AND):** Calculates the probability of all selected events occurring.
+            - **Union Probability (OR):** Calculates the probability of at least one of the selected events occurring.
+            - **Conditional Probability:** Calculates P(B|A), the probability of event B occurring given that event A has occurred. Requires selecting two variables.
+            - **Bayes' Theorem:** Updates the probability of an event based on new evidence.
+              - Select 'Bayes' Theorem' as the calculation type.
+              - Choose three of your defined variables for:
+                - P(A): The prior probability of event A.
+                - P(B|A): The probability of observing evidence B if event A is true.
+                - P(B|¬A): The probability of observing evidence B if event A is false.
+            - **Binomial Distribution:** Calculates the probability of a specific number of successes in a fixed number of independent trials.
+              - Select 'Binomial Distribution' as the calculation type.
+              - Choose one of your defined variables for 'p' (probability of success per trial).
+              - Enter 'n' (total number of trials) and 'k' (number of successes).
+            
+            4. View results, including the formula used.
             """)
 
     # Display past calculations in sidebar
@@ -185,18 +203,46 @@ def main():
                 "Select Probability Calculation",
                 ["Joint Probability (AND)",
                  "Union Probability (OR)",
-                 "Conditional Probability"]
+                 "Conditional Probability",
+                 "Bayes' Theorem",
+                 "Binomial Distribution"]
             )
 
             # Conditional probability options
             event_A = None
             event_B = None
+            prior_event_name = None
+            evidence_given_prior_event_name = None
+            evidence_given_not_prior_event_name = None
+            # Binomial distribution options
+            prob_success_event_name_binomial = None
+            num_trials_binomial = 0
+            num_successes_binomial = 0
+
+
             if calc_type == "Conditional Probability" and len(st.session_state.variables) >= 2:
                 event_A = st.selectbox("Select Event A (Given)",
                                         [var['name'] for var in st.session_state.variables])
                 event_B = st.selectbox("Select Event B (Target)",
                                         [var['name'] for var in st.session_state.variables
                                          if var['name'] != event_A])
+            elif calc_type == "Bayes' Theorem" and len(st.session_state.variables) >= 3:
+                variable_names = [var['name'] for var in st.session_state.variables]
+                prior_event_name = st.selectbox("Select P(A) (Prior Probability)", variable_names)
+                
+                remaining_vars_for_b_given_a = [name for name in variable_names if name != prior_event_name]
+                evidence_given_prior_event_name = st.selectbox("Select P(B|A) (Likelihood of evidence if A is true)", remaining_vars_for_b_given_a)
+                
+                remaining_vars_for_b_given_not_a = [name for name in remaining_vars_for_b_given_a if name != evidence_given_prior_event_name]
+                evidence_given_not_prior_event_name = st.selectbox("Select P(B|¬A) (Likelihood of evidence if A is false)", remaining_vars_for_b_given_not_a)
+            elif calc_type == "Binomial Distribution":
+                prob_success_event_name_binomial = st.selectbox(
+                    "Select Variable for Probability of Success (p)",
+                    [var['name'] for var in st.session_state.variables]
+                )
+                num_trials_binomial = st.number_input("Number of Trials (n)", min_value=0, step=1, value=0)
+                num_successes_binomial = st.number_input("Number of Successes (k)", min_value=0, step=1, value=0)
+
 
             # Calculate button
             if st.button('Calculate Probability'):
@@ -211,6 +257,34 @@ def main():
                                 calc_type,
                                 event_A=event_A,
                                 event_B=event_B
+                            )
+                        elif calc_type == "Bayes' Theorem" and len(st.session_state.variables) >= 3:
+                            if not (prior_event_name and evidence_given_prior_event_name and evidence_given_not_prior_event_name):
+                                st.error("Please select all three events for Bayes' Theorem calculation.")
+                                return
+                            if len(set([prior_event_name, evidence_given_prior_event_name, evidence_given_not_prior_event_name])) < 3:
+                                st.error("Please select three distinct variables for Bayes' Theorem calculation.")
+                                return
+                            result = calculate_probability(
+                                variables_data,
+                                calc_type,
+                                event_A=prior_event_name, # P(A)
+                                event_B=evidence_given_prior_event_name, # P(B|A)
+                                evidence_given_not_prior_event_name=evidence_given_not_prior_event_name # P(B|~A)
+                            )
+                        elif calc_type == "Binomial Distribution":
+                            if prob_success_event_name_binomial is None:
+                                st.error("Please select a variable for the probability of success (p).")
+                                return
+                            if num_successes_binomial > num_trials_binomial:
+                                st.error("Number of successes (k) cannot be greater than the number of trials (n).")
+                                return
+                            result = calculate_probability(
+                                variables_data,
+                                calc_type,
+                                prob_success_event_name=prob_success_event_name_binomial,
+                                num_trials=num_trials_binomial,
+                                num_successes=num_successes_binomial
                             )
                         else:
                             result = calculate_probability(variables_data, calc_type)
@@ -276,8 +350,12 @@ def main():
                             st.latex(r"P(A \cap B) = P(A) \times P(B)")
                         elif calc_type == "Union Probability (OR)":
                             st.latex(r"P(A \cup B) = P(A) + P(B) - P(A \cap B)")
-                        else:
+                        elif calc_type == "Conditional Probability":
                             st.latex(r"P(B|A) = \frac{P(A \cap B)}{P(A)}")
+                        elif calc_type == "Bayes' Theorem":
+                            st.latex(r"P(A|B) = \frac{P(B|A) \times P(A)}{P(B|A) \times P(A) + P(B|\neg A) \times P(\neg A)}")
+                        elif calc_type == "Binomial Distribution":
+                            st.latex(r"P(X=k) = C(n, k) \cdot p^k \cdot (1-p)^{n-k}")
 
                     except Exception as e:
                         st.error(f"Calculation Error: {str(e)}")
