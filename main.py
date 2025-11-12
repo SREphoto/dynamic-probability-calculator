@@ -181,35 +181,42 @@ def main():
                 "Select Probability Calculation",
                 ["Joint Probability (AND)",
                  "Union Probability (OR)",
-                 "Conditional Probability"]
+                 "Conditional Probability",
+                 "Bayesian Inference",
+                 "Binomial Probability",
+                 "Poisson Distribution",
+                 "Expected Value"]
             )
 
             # Conditional probability options
-            event_A = None
-            event_B = None
-            if calc_type == "Conditional Probability" and len(st.session_state.variables) >= 2:
-                event_A = st.selectbox("Select Event A (Given)",
-                                        [var['name'] for var in st.session_state.variables])
-                event_B = st.selectbox("Select Event B (Target)",
-                                        [var['name'] for var in st.session_state.variables
-                                         if var['name'] != event_A])
+            event_A, event_B, n, k, p, rate = None, None, None, None, None, None
+
+            if calc_type in ["Conditional Probability", "Bayesian Inference"] and len(st.session_state.variables) >= 2:
+                event_A = st.selectbox("Select Event A (Given)", [var['name'] for var in st.session_state.variables])
+                event_B = st.selectbox("Select Event B (Target)", [var['name'] for var in st.session_state.variables if var['name'] != event_A])
+                if calc_type == "Bayesian Inference":
+                    st.session_state.variables.append({'name': f'P({event_A}|{event_B})', 'value': 0.5})
+
+            if calc_type == "Binomial Probability":
+                n = st.number_input("Number of trials (n)", min_value=0, step=1)
+                k = st.number_input("Number of successes (k)", min_value=0, step=1)
+                p = st.number_input("Probability of success (p)", min_value=0.0, max_value=1.0, format="%.4f")
+
+            if calc_type == "Poisson Distribution":
+                rate = st.number_input("Rate (λ)", min_value=0.0, format="%.4f")
+                k = st.number_input("Number of events (k)", min_value=0, step=1)
 
             # Calculate button
             if st.button('Calculate Probability'):
                 if validate_input(variables_data):
                     try:
-                        if calc_type == "Conditional Probability" and len(st.session_state.variables) >= 2:
-                            if event_A is None or event_B is None:
-                                st.error("Please select both events for conditional probability calculation.")
-                                return
-                            result = calculate_probability(
-                                variables_data,
-                                calc_type,
-                                event_A=event_A,
-                                event_B=event_B
-                            )
-                        else:
-                            result = calculate_probability(variables_data, calc_type)
+                        result = calculate_probability(
+                            variables_data,
+                            calc_type,
+                            event_A=event_A,
+                            event_B=event_B,
+                            n=n, k=k, p=p, rate=rate
+                        )
 
                         # Store calculation in history
                         calculation_record = {
@@ -272,8 +279,16 @@ def main():
                             st.latex(r"P(A \cap B) = P(A) \times P(B)")
                         elif calc_type == "Union Probability (OR)":
                             st.latex(r"P(A \cup B) = P(A) + P(B) - P(A \cap B)")
-                        else:
+                        elif calc_type == "Conditional Probability":
                             st.latex(r"P(B|A) = \frac{P(A \cap B)}{P(A)}")
+                        elif calc_type == "Bayesian Inference":
+                            st.latex(r"P(B|A) = \frac{P(A|B) \times P(B)}{P(A)}")
+                        elif calc_type == "Binomial Probability":
+                            st.latex(r"P(X=k) = \binom{n}{k} p^k (1-p)^{n-k}")
+                        elif calc_type == "Poisson Distribution":
+                            st.latex(r"P(X=k) = \frac{\lambda^k e^{-\lambda}}{k!}")
+                        elif calc_type == "Expected Value":
+                            st.latex(r"E[X] = \sum x \cdot P(x)")
 
                     except Exception as e:
                         st.error(f"Calculation Error: {str(e)}")
