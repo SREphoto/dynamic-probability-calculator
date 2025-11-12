@@ -14,47 +14,25 @@
 }
 
 /* Custom header styling */
-.stMarkdown h1 {
+.header {
+  background-color: #2E3440;
+  padding: 1rem;
+  text-align: center;
+  border-bottom: 2px solid #4CAF50;
+  margin-bottom: 2rem;
+}
+
+.title {
+  color: white;
+  font-size: 2rem;
   font-weight: 600;
-  letter-spacing: 1px;
+  margin: 0;
 }
 
-/* Make the header truly sticky */
-.stApp {
-  margin-top: 0;
-}
-
-/* Fix for sticky header positioning */
-div[data-testid="stDecoration"] {
-  position: sticky !important;
-  top: 0;
-  z-index: 999;
-  background-color: white;
-}
-
-/* Custom sticky header class */
-.sticky-header {
-  position: fixed !important;
-  top: 48px;
-  left: 0;
-  right: 0;
-  z-index: 998;
-  width: 100%;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-}
-
-/* Header title styling */
-.header-title {
-  font-size: 1.1rem !important;
-  font-weight: 500 !important;
-  letter-spacing: 1px !important;
-  text-transform: uppercase !important;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;
-}
-
-/* Add padding to the top of the app to accommodate the fixed header */
-.main .block-container {
-  padding-top: 6rem;
+.subtitle {
+  color: #D8DEE9;
+  font-size: 1rem;
+  margin: 0.5rem 0 0 0;
 }
 
 /* Reduce sidebar width */

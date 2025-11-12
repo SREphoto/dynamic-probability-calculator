@@ -49,12 +49,11 @@ def main():
     if 'past_calculations' not in st.session_state:
         st.session_state.past_calculations = []
 
-    # Custom header with styling - positioned below Streamlit's menu
+    # Custom header with styling
     st.markdown("""
-    <div style='background-color:#2E3440; padding:4px; position:fixed; top:48px; left:0; right:0; width:100%; z-index:9998; display:flex; justify-content:space-between; align-items:center;' class="sticky-header">
-        <div style='width:50px;'></div>
-        <h2 style='color:white; text-align:center; margin:0; font-size:18px;' class="header-title">Dynamic Probability Calculator 🎲</h2>
-        <div style='width:50px;'></div>
+    <div class="header">
+        <h1 class="title">🎲 Dynamic Probability Calculator</h1>
+        <p class="subtitle">An interactive tool for complex probability calculations</p>
     </div>
     """, unsafe_allow_html=True)
 
@@ -130,18 +129,25 @@ def main():
             st.markdown("---")
 
 
-        # Add variable button
-        if st.button('Add Variable ➕'):
-            st.session_state.variables.append({
-                'name': f'Variable {len(st.session_state.variables) + 1}',
-                'value': 0.5
-            })
+        # Create two columns for the buttons
+        add_col, clear_col = st.columns(2)
+        with add_col:
+            if st.button('Add Variable ➕'):
+                st.session_state.variables.append({
+                    'name': f'Variable {len(st.session_state.variables) + 1}',
+                    'value': 0.5
+                })
+
+        with clear_col:
+            if st.button('Clear All 🗑️'):
+                st.session_state.variables = []
+                st.rerun()
 
         # Display variables
         variables_data = {}
         for idx, var in enumerate(st.session_state.variables):
-            # Create three columns: name, value, and buttons
-            name_col, value_col, buttons_col = st.columns([3, 2, 2])
+            # Create three columns: name, value, and a remove button
+            name_col, value_col, remove_col = st.columns([4, 3, 1])
 
             with name_col:
                 new_name = st.text_input(
@@ -163,20 +169,10 @@ def main():
                 var['value'] = new_value
                 variables_data[new_name] = new_value
 
-            with buttons_col:
-                # Create two equal columns for the buttons
-                remove_btn, add_btn = st.columns(2)
-                with remove_btn:
-                    if st.button('❌', key=f'remove_{idx}', help="Remove this variable"):
-                        st.session_state.variables.pop(idx)
-                        st.rerun()
-                with add_btn:
-                    if st.button('➕', key=f'add_after_{idx}', help="Add new variable"):
-                        st.session_state.variables.append({
-                            'name': f'Variable {len(st.session_state.variables) + 1}',
-                            'value': 0.5
-                        })
-                        st.rerun()
+            with remove_col:
+                if st.button('🗑️', key=f'remove_{idx}', help="Remove this variable"):
+                    st.session_state.variables.pop(idx)
+                    st.rerun()
 
         # Calculation options
         if st.session_state.variables:
