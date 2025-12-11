@@ -15,41 +15,57 @@
 
 /* Custom header styling */
 .header {
-  background-color: #2E3440;
-  padding: 1rem;
+  background: linear-gradient(90deg, #4b6cb7 0%, #182848 100%);
+  padding: 2rem;
   text-align: center;
-  border-bottom: 2px solid #4CAF50;
+  border-radius: 10px;
   margin-bottom: 2rem;
+  color: white;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
 }
 
 .title {
   color: white;
-  font-size: 2rem;
-  font-weight: 600;
+  font-size: 2.5rem;
+  font-weight: 700;
   margin: 0;
+  font-family: 'Helvetica Neue', sans-serif;
 }
 
 .subtitle {
-  color: #D8DEE9;
-  font-size: 1rem;
+  color: #E0E0E0;
+  font-size: 1.1rem;
   margin: 0.5rem 0 0 0;
 }
 
-/* Reduce sidebar width */
+/* Result Box */
+.result-box {
+    padding: 20px;
+    background-color: #ffffff;
+    border-left: 5px solid #4CAF50;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.result-box h3 {
+    margin: 0;
+    color: #2c3e50;
+}
+
+.result-box p {
+    margin: 5px 0 0 0;
+    color: #7f8c8d;
+}
+
+/* Button Styling */
+.stButton>button {
+    border-radius: 5px;
+    font-weight: 600;
+}
+
+/* Sidebar adjustments */
 [data-testid="stSidebar"] {
-  width: 250px !important;
-  min-width: 250px !important;
-}
-
-/* Making sure the sidebar content has proper padding */
-[data-testid="stSidebarContent"] {
-  padding-top: 1rem;
-}
-
-/* Align sidebar collapse button with the header */
-button[kind="secondary"][data-testid="baseButton-secondary"] {
-  position: fixed !important;
-  top: 54px !important; /* Aligned with the header which is at 48px + some padding */
-  left: 0 !important;
-  z-index: 999 !important;
+    background-color: #f8f9fa;
 }

@@ -4,15 +4,20 @@ A Streamlit-powered web application for performing complex probability calculati
 
 ## Features
 
-- Interactive variable input system
-- Multiple probability calculation types:
+- **Interactive Variable Input**: Dynamic input fields tailored to the specific calculation type.
+- **Comprehensive Probability Calculations**:
   - Joint Probability (AND)
   - Union Probability (OR)
   - Conditional Probability
-- Calculation history tracking
-- Result sharing functionality
-- Dynamic formula display
-- User-friendly interface with real-time updates
+  - Bayesian Inference
+  - Expected Value
+- **Statistical Distributions**:
+  - Binomial Distribution
+  - Poisson Distribution
+  - Normal Distribution
+- **Visualizations**: Interactive charts for probability distributions using Plotly.
+- **History & Sharing**: Track past calculations and share results via URL.
+- **Educational Tools**: View formulas and explanations for each calculation.
 
 ## Technologies Used
 
@@ -20,6 +25,7 @@ A Streamlit-powered web application for performing complex probability calculati
 - Streamlit
 - NumPy
 - Pandas
+- Plotly
 
 ## Setup and Installation
 
@@ -31,6 +37,8 @@ git clone <your-repository-url>
 2. Install dependencies:
 ```bash
 pip install -r requirements.txt
+# OR if using uv
+uv sync
 ```
 
 3. Run the application:
@@ -42,12 +50,11 @@ The application will be available at `http://localhost:5000`
 
 ## Usage
 
-1. Add variables using the "Add Variable" button
-2. Enter variable names and probability values (between 0 and 1)
-3. Select the type of probability calculation
-4. Click "Calculate Probability" to see the results
-5. View calculation history in the sidebar
-6. Share results using the share button
+1. **Select Calculation Type**: Choose from the dropdown menu (e.g., Conditional Probability, Normal Distribution).
+2. **Enter Parameters**: Input the required probabilities or values. The interface adapts to your selection.
+3. **Calculate**: Click the "Calculate" button to view results.
+4. **Visualize**: See interactive plots for distributions.
+5. **History**: Access previous calculations in the sidebar.
 
 ## Contributing
 
