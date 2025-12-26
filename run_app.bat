@@ -51,7 +51,7 @@ echo Using Python: %PYTHON_CMD%
 echo.
 echo [STEP 1] Installing/Upgrading Dependencies...
 %PYTHON_CMD% -m pip install --upgrade pip
-%PYTHON_CMD% -m pip install streamlit pandas numpy plotly scipy
+%PYTHON_CMD% -m pip install -r requirements.txt
 
 if %errorlevel% neq 0 (
     echo.
