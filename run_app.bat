@@ -1,38 +1,73 @@
 
 @echo off
+setlocal
 echo ===================================================
-echo   Dynamic Probability Calculator - Launcher
+echo   Dynamic Probability Calculator - Launcher V2
 echo ===================================================
 
-echo [1/3] Checking Python...
-python --version
-if %errorlevel% neq 0 (
-    echo ERROR: Python is not found! Please install Python 3.10+ and add it to your PATH.
-    pause
-    exit /b
+REM 1. Try standard 'python' command
+python --version >nul 2>&1
+if %errorlevel% equ 0 (
+    set PYTHON_CMD=python
+    goto :FOUND_PYTHON
 )
 
-echo [2/3] Installing/Verifying Dependencies...
-pip install streamlit pandas numpy plotly scipy
-if %errorlevel% neq 0 (
-    echo ERROR: Failed to install dependencies.
-    pause
-    exit /b
+REM 2. Try 'py' launcher
+py --version >nul 2>&1
+if %errorlevel% equ 0 (
+    set PYTHON_CMD=py
+    goto :FOUND_PYTHON
 )
 
-echo [3/3] Starting Application...
+REM 3. Try common install locations
+if exist "C:\Python312\python.exe" (
+    set PYTHON_CMD="C:\Python312\python.exe"
+    goto :FOUND_PYTHON
+)
+if exist "C:\Python311\python.exe" (
+    set PYTHON_CMD="C:\Python311\python.exe"
+    goto :FOUND_PYTHON
+)
+if exist "%LOCALAPPDATA%\Programs\Python\Python312\python.exe" (
+    set PYTHON_CMD="%LOCALAPPDATA%\Programs\Python\Python312\python.exe"
+    goto :FOUND_PYTHON
+)
+if exist "%LOCALAPPDATA%\Programs\Python\Python311\python.exe" (
+    set PYTHON_CMD="%LOCALAPPDATA%\Programs\Python\Python311\python.exe"
+    goto :FOUND_PYTHON
+)
+
 echo.
-echo The app should open in your default browser.
-echo If it closes immediately, check the errors below.
+echo [ERROR] Python not found in PATH or standard locations.
+echo Please install Python from https://www.python.org/downloads/
+echo Make sure to check "Add Python to PATH" during installation.
 echo.
-streamlit run main.py
+pause
+exit /b 1
+
+:FOUND_PYTHON
+echo Using Python: %PYTHON_CMD%
+
+echo.
+echo [STEP 1] Installing/Upgrading Dependencies...
+%PYTHON_CMD% -m pip install --upgrade pip
+%PYTHON_CMD% -m pip install streamlit pandas numpy plotly scipy
 
 if %errorlevel% neq 0 (
     echo.
-    echo ===================================================
-    echo   CRITICAL ERROR
-    echo ===================================================
-    echo Streamlit failed to run. Please check the error message above.
+    echo [ERROR] Failed to install dependencies.
+    echo Please check your internet connection or permission settings.
+    pause
+    exit /b 1
+)
+
+echo.
+echo [STEP 2] Launching Application...
+%PYTHON_CMD% -m streamlit run main.py
+
+if %errorlevel% neq 0 (
+    echo.
+    echo [ERROR] Application crashed or failed to start.
 )
 
 pause

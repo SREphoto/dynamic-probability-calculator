@@ -30,11 +30,13 @@ A Streamlit-powered web application for performing complex probability calculati
 ## Setup and Installation
 
 1. Clone the repository:
+
 ```bash
 git clone <your-repository-url>
 ```
 
 2. Install dependencies:
+
 ```bash
 pip install -r requirements.txt
 # OR if using uv
@@ -42,6 +44,7 @@ uv sync
 ```
 
 3. Run the application:
+
 ```bash
 streamlit run main.py
 ```
@@ -59,6 +62,13 @@ The application will be available at `http://localhost:5000`
 ## Contributing
 
 Contributions are welcome! Please feel free to submit a Pull Request.
+
+## Troubleshooting
+
+If you are having trouble running the app (e.g., `streamlit` not found):
+
+1. Double-click **`run_app.bat`** in the project folder.
+2. This script will attempt to find Python, install dependencies, and launch the app for you.
 
 ## License
 
