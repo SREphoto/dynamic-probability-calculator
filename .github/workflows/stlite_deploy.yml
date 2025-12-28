@@ -1,0 +1,114 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+
+      - name: Create Build Directory
+        run: |
+          mkdir build
+          cp main.py build/
+          cp utils.py build/
+          cp requirements.txt build/
+          cp -r modules build/
+          # Copy .streamlit folder
+          cp -r .streamlit build/ || true
+
+      - name: Create index.html
+        run: |
+          cat > build/index.html << 'EOF'
+          <!DOCTYPE html>
+          <html>
+            <head>
+              <meta charset="UTF-8" />
+              <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+              <meta
+                name="viewport"
+                content="width=device-width, initial-scale=1, shrink-to-fit=no"
+              />
+              <title>Dynamic Probability Calculator</title>
+              <link
+                rel="stylesheet"
+                href="https://cdn.jsdelivr.net/npm/@stlite/mountable@0.53.0/build/stlite.css"
+              />
+            </head>
+            <body>
+              <div id="root"></div>
+              <script src="https://cdn.jsdelivr.net/npm/@stlite/mountable@0.53.0/build/stlite.js"></script>
+              <script>
+                stlite.mount(
+                  {
+                    requirements: ["streamlit", "numpy<2", "pandas", "plotly", "scipy"],
+                    entrypoint: "main.py",
+                    files: {
+                      "main.py": {
+                        url: "./main.py",
+                      },
+                      "utils.py": {
+                        url: "./utils.py",
+                      },
+                      "modules/__init__.py": {
+                        url: "./modules/__init__.py",
+                      },
+                      "modules/distributions.py": {
+                        url: "./modules/distributions.py",
+                      },
+                      "modules/probability.py": {
+                        url: "./modules/probability.py",
+                      },
+                      "modules/scenarios.py": {
+                        url: "./modules/scenarios.py",
+                      },
+                      "modules/simulations.py": {
+                        url: "./modules/simulations.py",
+                      },
+                      "modules/statistics.py": {
+                        url: "./modules/statistics.py",
+                      },
+                      ".streamlit/config.toml": {
+                        url: "./.streamlit/config.toml"
+                      },
+                      ".streamlit/custom.css": {
+                        url: "./.streamlit/custom.css"
+                      }
+                    },
+                  },
+                  document.getElementById("root")
+                );
+              </script>
+            </body>
+          </html>
+          EOF
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: 'build'
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

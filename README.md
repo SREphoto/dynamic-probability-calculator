@@ -35,7 +35,7 @@ A Streamlit-powered web application for performing complex probability calculati
 git clone <your-repository-url>
 ```
 
-2. Install dependencies:
+1. Install dependencies:
 
 ```bash
 pip install -r requirements.txt
@@ -43,7 +43,7 @@ pip install -r requirements.txt
 uv sync
 ```
 
-3. Run the application:
+1. Run the application:
 
 ```bash
 streamlit run main.py
@@ -58,6 +58,10 @@ The application will be available at `http://localhost:5000`
 3. **Calculate**: Click the "Calculate" button to view results.
 4. **Visualize**: See interactive plots for distributions.
 5. **History**: Access previous calculations in the sidebar.
+
+## Deployment
+
+See [DEPLOYMENT.md](DEPLOYMENT.md) for instructions on deploying to **Render** and **GitHub Pages**.
 
 ## Contributing
 
